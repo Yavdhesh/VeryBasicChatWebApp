@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta charset="utf-8">
+<script type"test/javascript" src="socket.io/socket.io.js"></script>
+<script
+  src="https://code.jquery.com/jquery-3.3.1.js"
+  integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+  crossorigin="anonymous"></script>
+<link rel="stylesheet" type="text/css" href="styla/index.css"/>
+<title>index</title>
+</head>
+<body>
+<div id="login-area">
+<div id="login-text"><h1>लोगिन करवा रो </h1>
+
+</div>
+
+<div id="login-form-area">
+<form id="login-form">
+<input type="text" id="username" plceholder="आपरो नाम" autocomplete="off"/>
+<input type="submit" id="login-submit" value="लोगिन करो शा"/>
+
+</form>
+</div>
+
+</div>
+
+<div id="chat-area">
+<div id="users-area">
+<div id="online-users-text">
+<h1>Onlne Users:</h1>
+</div>
+<div id="online-users">
+<ul id="users">
+
+
+</ul>
+</div>
+</div>
+
+<div id="message-area">
+<div id="display-message-area">
+<ul id="messages">
+
+</ul>
+
+</div>
+
+<div id="message-form-area">
+<form id="message-form">
+<input id="message"  type="text" placeholder="Type your message" autocomplete="off"/>
+<input id="message-submit"  type="submit" value="भेजो सन्देसो"/>
+</form>
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+
+</body>
+
+<script type="text/javascript">
+var socket =io();
+$("#login-form").submit(function(event){
+event.preventDefault();
+if(""==$("#username").val() || $("#username").val()==" "){
+alert("Incorrect input naaki didi");}
+
+else{
+$username=$("#username").val();
+$("#login-area").hide();
+$("#chat-area").show();
+$("#messages").html("");
+console.log($username);
+socket.emit("has connected",$username);
+}
+});
+
+function loopingList(users){
+for(var i=0;i<users.length;i++){
+ $("#users").append("<li>><b>"+users[i]+"</b></li>");
+ }
+}
+
+socket.on('has connected', function(data){
+ //for(var i=0;i<users.length;i++){
+ //$("#users").append("<li>><b>"+users[i]+"</b></li>");
+ //}
+ $("#users").html("");
+ 
+ loopingList(data.usersList);
+ $("#messages").append("<li><i><b>"+data.username+"</b> has connected</i></li>")
+
+});
+
+socket.on('has disconnected', function(data){
+$("#users").html("");
+loopingList(data.usersList);
+ $("#messages").append("<li><i><b>"+data.username+"</b> has disconnected</i></li>");
+})
+
+//socket.emit('disconnect',$username);
+
+$("#message-form").submit(function(event){
+event.preventDefault();
+if(""==$("#message").val() || $("#message").val()==" "){
+alert("Khali message koni bheji shaka");}
+
+else{
+socket.emit("nayo message",{username:$username,message:$("#message").val()});
+$("#message").val("");
+}
+});
+
+
+socket.on("nayo message", function(data){
+$('#messages').append("<li><b>"+data.username+"</b> : "+data.message+"</li>");
+});
+
+</script>
+
+
+</html>

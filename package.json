@@ -1,0 +1,18 @@
+{
+  "name": "chat-application",
+  "version": "1.0.0",
+  "description": "A simple chat applcation by Yavdhesh node js, expressjs, jquery",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "myFirstNodeJsScript": "echo \"Namastey, Mera Naam Yavdhesh Hai\"",
+    "code1": "echo \"Mharo naame Yavdhesh e\""
+  },
+  "dependencies": {
+    "express": "^4.16.3",
+    "mongodb": "^3.1.1",
+    "socket.io": "^2.1.1"
+  },
+  "author": "Yavdhesh",
+  "license": "ISC"
+}
