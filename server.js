@@ -7,7 +7,7 @@ var server = http.Server(app);
 var io=require('socket.io')(server);
 
 var users=[];
-server.listen(3333, function(){
+server.listen(8080, function(){
 	
 	console.log("Yavdhesh ri chaat application saale hai");
 });
