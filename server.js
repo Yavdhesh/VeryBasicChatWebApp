@@ -50,23 +50,37 @@ while(arr.length < 5){
 	nonrepeatingList.push(randomnumber);
 		 
 	}
-}
-
- for(var i=0;i<arr.length;i++){
+	console.log("non repeating ki lambai = "+nonrepeatingList.length);
+	if(json.quiz_questions.length == nonrepeatingList.length){
+	nonrepeatingList=[];	
+	}
+	for(var i=0;i<arr.length;i++){
  	jsonToBe.quiz_questions.push(json.quiz_questions[arr[i]]);
  }
  return jsonToBe;
+}
 
+ 
 
-} 
+ 
  app.get('/initialQuizData', function(req, res){
 	console.log("vei giyo");
 		var jsonObj=randomIdGenerator();
 	res.send(jsonObj)
 	//res.sendFile(__dirname+"/index.html");
-	console.log(__dirname+"/index.html");
+	console.log(__dirname+"/index.html tejash quiz App wali service");
 
-})
+});
+
+app.get('/emptyList', function(req, res){
+	var size=nonrepeatingList.length;
+	nonrepeatingList=[];	
+	res.send("safaltapurvak nasht kiya gaya jiski lambai hai = "+size);
+	//res.sendFile(__dirname+"/index.html");
+	console.log(__dirname+"/index.html tejash quiz App wali service");
+
+});
+
 
 
 io.on("connection",function(socket){
