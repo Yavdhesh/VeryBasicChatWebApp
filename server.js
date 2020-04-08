@@ -11,7 +11,7 @@ var server = http.Server(app);
 var io=require('socket.io')(server);
 
 var users=[];
-server.listen(443, function(){
+server.listen(process.env.PORT, function(){
 	
 	console.log("Yavdhesh ri chaat application saale hai");
 });
