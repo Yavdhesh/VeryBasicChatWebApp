@@ -306,7 +306,7 @@ console.log("Question Size");
 console.log(json.quiz_questions.length);
 var arr = [];
 var jsonToBe = {"quiz_questions":[]};
-while(arr.length < 5){
+while(arr.length < 10){
     var randomnumber = Math.floor(Math.random()*(json.quiz_questions.length));
     if(arr.indexOf(randomnumber) > -1 || nonrepeatingList.indexOf(randomnumber) > -1) 
 		continue;
