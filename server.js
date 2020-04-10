@@ -212,6 +212,38 @@ async function modifyUserResultExcel(user,result){
 	
 }
 
+async  function getVersion(){
+	
+	return "1.0.0";
+}
+
+//saaraa parinaam ulti karne hetu
+async function getUserResultExcelAll(){
+	
+	let workbook = new Excel.Workbook();
+	
+	workbook= await workbook.xlsx.readFile(__dirname+"/user-lastresult.xlsx");
+	
+	let jsonList=[];
+	
+	let worksheet=workbook.getWorksheet(1);
+	
+	for (i = 2; i <= worksheet.rowCount; i++) {
+        console.log(worksheet.getRow(i).getCell(1).value);
+        console.log(worksheet.getRow(i).getCell(2).value);
+		let json={};
+		row = worksheet.getRow(i);
+		 let user =row.getCell(1).value;
+		 let result = row.getCell(2).value;
+		 json.user=user;
+		 json.result=result;
+		 jsonList.push(json);
+			
+		}
+    
+	return jsonList;
+}
+
 async function getUserResultExcel(user){
 
 let workbook = new Excel.Workbook();
@@ -372,6 +404,14 @@ app.post('/get-user-result', function(req, res){
 
 });
 
+app.get('/get-user-result', function(req, res){
+	
+	getUserResultExcelAll().then((data)=>{
+		res.send(data);
+	})
+
+});
+
 //yeh aagantuk parinaam ke liye hai
 app.post('/user-result',function(request,res){
 	//json update
@@ -381,6 +421,13 @@ app.post('/user-result',function(request,res){
 
 	});
 	
+	
+});
+
+app.get("/app-version",function(req,res){
+	getVersion().then(function(data){
+		res.send(data);
+	});
 	
 });
 
