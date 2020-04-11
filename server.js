@@ -11,7 +11,8 @@ var server = http.Server(app);
 var io=require('socket.io')(server);
 
 var users=[];
-server.listen(process.env.PORT, function(){
+//server.listen(process.env.PORT, function(){
+	server.listen(8082, function(){
 	
 	console.log("Yavdhesh ri chaat application saale hai");
 });
@@ -55,23 +56,86 @@ let questionJso=null;
 let workbook = new Excel.Workbook();
 workbook = await workbook.xlsx.readFile(__dirname+"/Question-file.xlsx");
 		var worksheet = workbook.getWorksheet(1);
+		
+		if(worksheet.rowCount >1){
 		var index =2;
 		index=  randomQuestionJson(worksheet.rowCount);
 		while(index<2){
 			index=  randomQuestionJson(worksheet.rowCount);
-		}
-		
-		//var worksheet = workbook.getWorksheet(1);
-        var row = worksheet.getRow(index);
+			var row = worksheet.getRow(index);
 		//console.log(worksheet.rowCount);
         //console.log(row.getCell(1).value);
         //console.log(row.getCell(2).value);
-		
+		if(''!=row.getCell(2).value || null !=row.getCell(2).value || undefined !=row.getCell(2).value){
 		questionJso=row.getCell(2).value;
+		}
+		index=2;
+		}
+		
+		//var worksheet = workbook.getWorksheet(1);
+        
+		}
 	
 	return  questionJso;
 	
 }
+
+async function deleteAllJson(){
+
+	let workbook = new Excel.Workbook();
+	workbook = await workbook.xlsx.readFile(__dirname+"/Question-file.xlsx");
+    var worksheet = workbook.getWorksheet(1);
+
+
+
+		for (i = 2; i <= worksheet.rowCount; i++) {
+        console.log(worksheet.getRow(i).getCell(1).value);
+        console.log(worksheet.getRow(i).getCell(2).value);
+
+		row = worksheet.getRow(i);
+		row.getCell(1).value=''; // null karne se maan ki anulabdhataa maanaa jaataa hai
+		row.getCell(2).value='';
+		row.commit();
+
+    }
+	worksheet.spliceRows(1,worksheet.rowCount+1);
+	//worksheet.commit();
+		//var workbook1=null;
+		let workbook1=await workbook.xlsx.writeFile(__dirname+"/Question-file.xlsx");   
+
+		return "done";
+
+}
+
+//11-04, pehle 10-04 ko kiyaa thaa
+async function deleteAllUser(){
+
+	let workbook = new Excel.Workbook();
+	workbook = await workbook.xlsx.readFile(__dirname+"/user-lastresult.xlsx");
+    var worksheet = workbook.getWorksheet(1);
+
+
+
+		for (i = 2; i <= worksheet.rowCount; i++) {
+        console.log(worksheet.getRow(i).getCell(1).value);
+        console.log(worksheet.getRow(i).getCell(2).value);
+
+		row = worksheet.getRow(i);
+		row.getCell(1).value=''; // null karne se maan ki anulabdhataa maanaa jaataa hai
+		row.getCell(2).value='';
+		row.commit();
+
+    }
+	//worksheet.spliceRows(2,worksheet.rowCount-1);
+	worksheet.spliceRows(1,worksheet.rowCount+1);
+	//worksheet.commit();
+		//var workbook1=null;
+		let workbook1=await workbook.xlsx.writeFile(__dirname+"/user-lastresult.xlsx");   
+
+		return "done";
+
+}
+
 
 // 7-04-2020 testing ke liye niche waalaa method hai, yavdhesh ne banaayaa
 
@@ -326,10 +390,12 @@ async function addAsync(x) {
 
 async function randomIdGenerator(){
 //***************************
+var jsonToBe = {"quiz_questions":[]};
 
 var nonrepeatingList =[];
 let dds=await questionJson();
 json = dds ;
+if(''!=json && null !=json && undefined!=json){
 json= JSON.parse(json);
 //console.log("Json jo ab random me jaayegaa");
 //console.log(typeof json);
@@ -337,7 +403,7 @@ json= JSON.parse(json);
 console.log("Question Size");
 console.log(json.quiz_questions.length);
 var arr = [];
-var jsonToBe = {"quiz_questions":[]};
+
 while(arr.length < json.quiz_questions.length){
     var randomnumber = Math.floor(Math.random()*(json.quiz_questions.length));
     if(arr.indexOf(randomnumber) > -1 || nonrepeatingList.indexOf(randomnumber) > -1) 
@@ -354,6 +420,7 @@ while(arr.length < json.quiz_questions.length){
 	for(var i=0;i<arr.length;i++){
  	jsonToBe.quiz_questions.push(json.quiz_questions[arr[i]]);
  }
+}
  
  //console.log(jsonToBe);
  return jsonToBe;
@@ -429,6 +496,22 @@ app.get("/app-version",function(req,res){
 		res.send(data);
 	});
 	
+});
+
+app.put('/del-all-user',(req,res)=>{
+
+	deleteAllUser().then((data)=>{
+		res.send(data);
+	});
+
+});
+
+app.put('/del-all-json',(req,res)=>{
+
+	deleteAllJson().then((data)=>{
+		res.send(data);
+	});
+
 });
 
 
