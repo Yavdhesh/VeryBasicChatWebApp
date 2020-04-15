@@ -58,24 +58,22 @@ workbook = await workbook.xlsx.readFile(__dirname+"/Question-file.xlsx");
 		var worksheet = workbook.getWorksheet(1);
 		
 		if(worksheet.rowCount >1){
-		var index =2;
-		index=  randomQuestionJson(worksheet.rowCount);
-		while(index<2){
-			index=  randomQuestionJson(worksheet.rowCount);
-			var row = worksheet.getRow(index);
+		console.log("rowcount>1");
+		let tempIndex=0;
+		while(0===tempIndex){
+			tempIndex=  randomQuestionJson(worksheet.rowCount);
+			console.log("Loop me index ="+tempIndex);
+			var row = worksheet.getRow(tempIndex);
 		//console.log(worksheet.rowCount);
         //console.log(row.getCell(1).value);
         //console.log(row.getCell(2).value);
-		if(''!=row.getCell(2).value || null !=row.getCell(2).value || undefined !=row.getCell(2).value){
+		if(tempIndex >1 && ''!=row.getCell(2).value && null !=row.getCell(2).value && undefined !=row.getCell(2).value){
 		questionJso=row.getCell(2).value;
+		}else{
+		tempIndex=0;
 		}
-		index=2;
 		}
-		
-		//var worksheet = workbook.getWorksheet(1);
-        
 		}
-	
 	return  questionJso;
 	
 }
