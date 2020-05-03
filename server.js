@@ -43,21 +43,45 @@ app.get("/styla/index.css",function(req,res){
 
 // random question json from excel
 
-function randomQuestionJson(rowCount){
+function randomQuestionJson(length){
 	
-	return Math.floor((Math.random() * rowCount) + 1);
+	return Math.floor(Math.random() * ((length-1) - 0 + 1) + 0);
+	//return Math.floor(Math.random() * (max - min + 1) + min)
+	
+	//return Math.floor((Math.random() * rowCount) + 2);
 }
 
 //questionJson
-async function questionJson(){
+async function questionJson(body){
 
 let questionJso=null;
 
 let workbook = new Excel.Workbook();
 workbook = await workbook.xlsx.readFile(__dirname+"/Question-file.xlsx");
 		var worksheet = workbook.getWorksheet(1);
+		var subjectQuest=[];
 		
-		if(worksheet.rowCount >1){
+		for (i = 2; i <= worksheet.rowCount; i++) {
+        console.log(worksheet.getRow(i).getCell(1).value);
+        console.log(worksheet.getRow(i).getCell(2).value);
+		console.log(worksheet.getRow(i).getCell(3).value);
+
+
+		row = worksheet.getRow(i);
+		if(body.subject===row.getCell(3).value && body.instructorId===row.getCell(4).value){
+		subjectQuest.push(row.getCell(2).value);	
+		}
+    }
+	
+	if(subjectQuest.length >= 1){
+		tempIndex=  randomQuestionJson(subjectQuest.length);
+		questionJso=subjectQuest[tempIndex];
+	}else{
+		return questionJso;
+	}
+		
+		
+		/*if(worksheet.rowCount >1){
 		console.log("rowcount>1");
 		let tempIndex=0;
 		while(0===tempIndex){
@@ -73,7 +97,7 @@ workbook = await workbook.xlsx.readFile(__dirname+"/Question-file.xlsx");
 		tempIndex=0;
 		}
 		}
-		}
+		}*/
 	return  questionJso;
 	
 }
@@ -209,7 +233,9 @@ async function modifyJsonExcel(json){
 		row.getCell(1).value=worksheet.rowCount-1;
 		
 		//yahaa par json daalte hai
-		row.getCell(2).value=json;
+		row.getCell(2).value=json.data;
+		row.getCell(3).value=json.subject;
+		row.getCell(4).value=json.instructorId;
         console.log(row.getCell(1).value)
         console.log(row.getCell(2).value);
 		
@@ -386,12 +412,12 @@ async function addAsync(x) {
 
 //yavdhesh 
 
-async function randomIdGenerator(){
+async function randomIdGenerator(body){
 //***************************
 var jsonToBe = {"quiz_questions":[]};
 
 var nonrepeatingList =[];
-let dds=await questionJson();
+let dds=await questionJson(body);
 json = dds ;
 if(''!=json && null !=json && undefined!=json){
 json= JSON.parse(json);
@@ -427,9 +453,9 @@ while(arr.length < json.quiz_questions.length){
  
 
  
- app.get('/initialQuizData', function(req, res){
+ app.post('/initialQuizData', function(req, res){
 	console.log("vei giyo");
-		randomIdGenerator().then(function(data){
+		randomIdGenerator(req.body).then(function(data){
 		console.log('reponse niche hai');
 		console.log(data);
 		res.send(data)	;
