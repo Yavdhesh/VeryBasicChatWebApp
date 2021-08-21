@@ -17,3 +17,11 @@
 #### Push the image using following commands-
 ##### `docker push $DOCKER_REPO/verybasicchatapp:$git_commit`
 ##### `docker push $DOCKER_REPO/verybasicchatapp:latest`
+
+
+## `[DockerPullProject]` :
+### [Docker Image Pull]
+#### Pull the image using `docker pull $DOCKER_REPO/verybasicchatapp:latest`
+
+### [Docker Container Run]
+#### Run the command `docker container run -p  80:8082 -d $DOCKER_REPO/verybasicchatapp:latest`  
