@@ -31,7 +31,7 @@ app.get('/', function(req, res){
 
 app.get('/test', function(req, res){
 	console.log("vei giyo /test maayne");
-	res.send("Namastey")
+	res.send("Namastey Sabhi log")
 	
 });
 
