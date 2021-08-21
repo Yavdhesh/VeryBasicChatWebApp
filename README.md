@@ -18,7 +18,7 @@
 ##### `docker push $DOCKER_REPO/verybasicchatapp:$git_commit`
 ##### `docker push $DOCKER_REPO/verybasicchatapp:latest`
 
-
+#####
 ## `[DockerPullProject]` :
 ### [Docker Image Pull]
 #### Pull the image using `docker pull $DOCKER_REPO/verybasicchatapp:latest`
