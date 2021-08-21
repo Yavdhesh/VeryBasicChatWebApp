@@ -12,3 +12,5 @@
 #### Then run the `npm install` command to install the dependencies inside the /usr/bin/app directory under npm_modules
 #### After the above command run, we will copy all the application code files inside /usr/bin/app.
 #### We are exposing 8082 port on the docker image
+#### Command to build the image from Dockerfile is `docker build . -t $DOCKER_REPO/verybasicchatapp:$git_commit -t $DOCKER_REPO/verybasicchatapp:latest` which will update the latest version of the app in the Docker Hub everytime.
+#### In order to track version of an image, we are using `$git_commit` for the repostiry to track the version of the image
