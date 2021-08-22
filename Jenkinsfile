@@ -1,7 +1,7 @@
 pipeline { 
        agent any 
        environment {
-               git_commit = sh(script: 'git rev-parse --short HEAD', , returnStdout: true).trim()
+               GIT_COMMIT = sh(script: 'git rev-parse --short HEAD', , returnStdout: true).trim()
                DOCKER_REPO = 'naathubaa'
                DOCKER_HUB_PASS = credentials('DOCKER_HUB_PASS')
         } 
@@ -10,14 +10,14 @@ pipeline {
         stages { 
         stage ('Checkout the code') {  
         steps{               
- checkout([$class: 'GitSCM', branches: [[name: '*/new-master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/Yavdhesh/VeryBasicChatWebApp.git']]])               
+          checkout([$class: 'GitSCM', branches: [[name: '*/new-master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/Yavdhesh/VeryBasicChatWebApp.git']]])               
         }
         }
         stage ('Build, Tag the Docker Image') { 
          steps{               
          dir('/var/lib/jenkins/workspace/DockerCICDPipelineProject') {
          
-         sh '''docker build . -t $DOCKER_REPO/verybasicchatapp:$git_commit -t $DOCKER_REPO/verybasicchatapp:latest && \\
+         sh '''docker build . -t $DOCKER_REPO/verybasicchatapp:$GIT_COMMIT -t $DOCKER_REPO/verybasicchatapp:latest && \\
          echo "docker image was built and tagged" && \\
          docker image ls 
          '''
@@ -30,7 +30,7 @@ pipeline {
          
          sh '''echo $DOCKER_HUB_PASS | docker login --username=$DOCKER_REPO --password-stdin && \\
          echo "Docker login successful" && \\
-         docker push $DOCKER_REPO/verybasicchatapp:$git_commit && \\
+         docker push $DOCKER_REPO/verybasicchatapp:$GIT_COMMIT && \\
          docker push $DOCKER_REPO/verybasicchatapp:latest && \\
          echo "Docker image was pushed" && \\
          '''
