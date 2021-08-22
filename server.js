@@ -31,7 +31,7 @@ app.get('/', function(req, res){
 
 app.get('/test', function(req, res){
 	console.log("vei giyo /test maayne");
-	res.send("Namastey, "+new Date() +" ye hai dinaak");
+	res.send("Namastey, "+new Date() +" ye hai dinaak, testing commit");
 	
 });
 
