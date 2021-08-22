@@ -5,11 +5,14 @@ pipeline {
                DOCKER_REPO = 'naathubaa'
                DOCKER_HUB_PASS = credentials('jenkins-aws-secret-access-key')
         } 
-        node{
-        checkout([$class: 'GitSCM', branches: [[name: '*/new-master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/Yavdhesh/VeryBasicChatWebApp.git']]])
-        }
-        stages { 
+      
         
+        stages { 
+        stage ('Checkout the code') {  
+        steps{               
+ checkout([$class: 'GitSCM', branches: [[name: '*/new-master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/Yavdhesh/VeryBasicChatWebApp.git']]])               
+        }
+        }
         stage ('Build, Tag the Docker Image') { 
          steps{               
          dir('/var/lib/jenkins/workspace/DockerCICDPipelineProject') {
