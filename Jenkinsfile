@@ -17,7 +17,7 @@ pipeline {
          steps{               
          dir('/var/lib/jenkins/workspace/DockerCICDPipelineProject') {
          
-         sh '''docker ps -a | awk \'{ print $1,$2 }\' | grep $DOCKER_REPO/verybasicchatapp | awk \'{print $1 }\' | xargs -I {} docker stop {} -f && \\
+         sh '''docker ps -a | awk \'{ print $1,$2 }\' | grep $DOCKER_REPO/verybasicchatapp | awk \'{print $1 }\' | xargs -I {} docker stop {}  && \\
          docker ps -a | awk \'{ print $1,$2 }\' | grep $DOCKER_REPO/verybasicchatapp | awk \'{print $1 }\' | xargs -I {} docker rm {} -f && \\
          sudo kill -9 $(sudo lsof -t -i:80) && \\
          docker build . -t $DOCKER_REPO/verybasicchatapp:$GIT_COMMIT -t $DOCKER_REPO/verybasicchatapp:latest && \\
@@ -57,7 +57,7 @@ pipeline {
        steps{                 
         dir('/var/lib/jenkins/workspace/DockerCICDPipelineProject') {
         sh '''echo $DOCKER_HUB_PASS | docker login --username=$DOCKER_REPO --password-stdin && \\
-        docker ps -a | awk \'{ print $1,$2 }\' | grep $DOCKER_REPO/verybasicchatapp | awk \'{print $1 }\' | xargs -I {} docker stop {} -f && \\
+        docker ps -a | awk \'{ print $1,$2 }\' | grep $DOCKER_REPO/verybasicchatapp | awk \'{print $1 }\' | xargs -I {} docker stop {}  && \\
         docker ps -a | awk \'{ print $1,$2 }\' | grep $DOCKER_REPO/verybasicchatapp | awk \'{print $1 }\' | xargs -I {} docker rm {} -f && \\
         sudo kill -9 $(sudo lsof -t -i:80) && \\
         echo "Running containers, stopped containers removed" && \\
