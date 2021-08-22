@@ -17,7 +17,8 @@ pipeline {
          steps{               
          dir('/var/lib/jenkins/workspace/DockerCICDPipelineProject') {
          
-         sh '''docker build . -t $DOCKER_REPO/verybasicchatapp:$GIT_COMMIT -t $DOCKER_REPO/verybasicchatapp:latest && \\
+         sh '''sudo kill -9 $(sudo lsof -t -i:80) && \\
+         docker build . -t $DOCKER_REPO/verybasicchatapp:$GIT_COMMIT -t $DOCKER_REPO/verybasicchatapp:latest && \\
          echo "docker image was built and tagged" && \\
          docker image ls 
          '''
