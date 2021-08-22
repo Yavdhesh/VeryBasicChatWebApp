@@ -32,7 +32,7 @@ pipeline {
          echo "Docker login successful" && \\
          docker push $DOCKER_REPO/verybasicchatapp:$GIT_COMMIT && \\
          docker push $DOCKER_REPO/verybasicchatapp:latest && \\
-         echo "Docker image was pushed" && \\
+         echo "Docker image was pushed" 
          '''
         }
        }
