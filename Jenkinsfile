@@ -3,7 +3,7 @@ pipeline {
        environment {
                git_commit = sh(script: 'git rev-parse --short HEAD', , returnStdout: true).trim()
                DOCKER_REPO = 'naathubaa'
-               DOCKER_HUB_PASS = credentials('jenkins-aws-secret-access-key')
+               DOCKER_HUB_PASS = credentials('DOCKER_HUB_PASS')
         } 
       
         
